@@ -1,12 +1,13 @@
 # Multi-stage build para otimizar tamanho da imagem
 FROM node:20-slim AS base
 
-# Instalar Chromium e dependências do Puppeteer
+# Instalar Chromium e dependências
 RUN apt-get update && apt-get install -y \
     chromium \
     chromium-driver \
     ca-certificates \
     fonts-liberation \
+    fonts-noto-color-emoji \
     libappindicator3-1 \
     libasound2 \
     libatk-bridge2.0-0 \
@@ -26,7 +27,7 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Configurar Puppeteer para usar Chromium do sistema
+# Configurar Puppeteer para NÃO baixar Chrome (usará o Chromium instalado)
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
@@ -36,7 +37,7 @@ WORKDIR /app
 # Copiar package files
 COPY package*.json ./
 
-# Instalar dependências (sem --production para garantir instalação completa)
+# Instalar dependências
 RUN npm ci --only=production && npm cache clean --force
 
 # Copiar código da aplicação
@@ -44,7 +45,7 @@ COPY . .
 
 # Criar usuário não-root para segurança
 RUN groupadd -r appuser && useradd -r -g appuser appuser \
-    && mkdir -p /home/appuser/.cache/puppeteer \
+    && mkdir -p /home/appuser/.cache \
     && chown -R appuser:appuser /app /home/appuser
 
 # Mudar para usuário não-root
