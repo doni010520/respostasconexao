@@ -76,8 +76,8 @@ async function buildHTML(data) {
   <style>
     @page {
       size: A4;
-      /* Margens: Topo (80px), Laterais (80px), Base (80px) */
-      margin: 80px 80px 80px 80px; /* ALTERADO */
+      /* Margens: Topo (80px), Laterais (80px), Base (90px) */
+      margin: 80px 80px 90px 80px; /* ALTERADO (base aumentada) */
     }
     
     /* ADICIONADO: Garante que a capa (primeira página) não tenha margens */
@@ -157,7 +157,7 @@ async function buildHTML(data) {
     }
     
     .page-header img {
-      height: 40px; /* ALTERADO (de 35px para 40px) */
+      height: 40px; /* MANTIDO */
     }
     
     /* CONTEÚDO DAS PÁGINAS */
@@ -170,6 +170,11 @@ async function buildHTML(data) {
       
       /* MANTIDO (evita que a própria div se quebre, se possível) */
       page-break-inside: avoid;
+    }
+    
+    /* ADICIONADO: Classe para forçar quebra de página */
+    .quebra-pagina-antes {
+      page-break-before: always;
     }
     
     .content-page h1 {
@@ -403,20 +408,20 @@ async function buildHTML(data) {
     </div>
     
     <!-- Conteúdo do Relatório Específico -->
-    ${relatorioData.paragrafos.map((item) => {
-      const text = item.text;
-      
-      // Detectar títulos e seções
-      if (text.match(/^\d+\./)) {
+    <!-- ADICIONADO: Wrapper com a classe de quebra de página -->
+    <div class="quebra-pagina-antes">
+      ${relatorioData.paragrafos.map((item) => {
+        const text = item.text;
+        
         return `<h2>${text}</h2>`;
       } else if (text.match(/^[A-ZÇÃÕÁÉÍÓÚ\s\-–()]+$/) && text.length < 100) {
         return `<h3>${text}</h3>`;
       } else if (text.includes('Orientado para')) {
-        return `<h3>${text}</h3>`;
-      } else {
-        return `<p>${text}</p>`;
-      }
-    }).join('\n')}
+        } else {
+          return `<p>${text}</p>`;
+        }
+      }).join('\n')}
+    </div>
     
   </div>
   
