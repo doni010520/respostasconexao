@@ -10,7 +10,7 @@ async function loadData() {
     const capaPath = path.join(__dirname, '../data/conteudos_base.json');
     conteudosBase = JSON.parse(await fs.readFile(capaPath, 'utf-8'));
   }
-  
+
   if (!relatorios) {
     const relPath = path.join(__dirname, '../data/relatorios.json');
     relatorios = JSON.parse(await fs.readFile(relPath, 'utf-8'));
@@ -31,7 +31,7 @@ function getPerfilTitulo(predominante, menosDesenvolvido) {
     'TEMPO': 'Orientado para Tempo (Solução imediata)',
     'MENSAGEM': 'Orientado para Mensagem (Conteúdo/Analítico)'
   };
-  
+
   return {
     predominante: titulos[predominante] || predominante,
     menosDesenvolvido: titulos[menosDesenvolvido] || menosDesenvolvido
@@ -41,11 +41,11 @@ function getPerfilTitulo(predominante, menosDesenvolvido) {
 // Montar HTML completo
 async function buildHTML(data) {
   await loadData();
-  
+
   const { nome, predominante, menosDesenvolvido, pontuacoes } = data;
   const perfil = `${predominante}-${menosDesenvolvido}`;
   const titulos = getPerfilTitulo(predominante, menosDesenvolvido);
-  
+
   // Calcular percentuais
   const percentuais = {
     PESSOAS: Math.round((pontuacoes.PESSOAS / 42) * 100),
@@ -53,19 +53,19 @@ async function buildHTML(data) {
     TEMPO: Math.round((pontuacoes.TEMPO / 42) * 100),
     MENSAGEM: Math.round((pontuacoes.MENSAGEM / 42) * 100)
   };
-  
+
   // Carregar imagens em base64
   const logoPath = path.join(__dirname, '../assets/logo.png');
   const brainPath = path.join(__dirname, '../assets/brain-icon.png');
   const logoBase64 = await imageToBase64(logoPath);
   const brainBase64 = await imageToBase64(brainPath);
-  
+
   // Obter conteúdo do relatório específico
   const relatorioData = relatorios[perfil];
   if (!relatorioData) {
     throw new Error(`Perfil ${perfil} não encontrado`);
   }
-  
+
   // HTML completo
   const html = `
 <!DOCTYPE html>
@@ -106,7 +106,7 @@ async function buildHTML(data) {
     }
     
     .capa-brain {
-      width: 300px;
+      width: 1200px;
       margin-bottom: 40px;
     }
     
@@ -141,20 +141,24 @@ async function buildHTML(data) {
       left: 0;
       right: 0;
       height: 60px;
-      padding: 15px 30px;
+      padding: 10px 60px; /* ALTERADO O PADDING (15px 30px) para 10px 60px para centralizar a logo maior */
       background: white;
       border-bottom: 2px solid #17a2b8;
       z-index: 1000;
+      display: flex; /* Adicionado para centralizar a logo verticalmente */
+      align-items: center; /* Adicionado para centralizar a logo verticalmente */
     }
     
     .page-header img {
-      height: 35px;
+      height: 40px; /* ALTERADO (de 35px para 40px) */
     }
     
     /* CONTEÚDO DAS PÁGINAS */
     .content-page {
       margin-top: 80px;
-      padding: 30px 40px 40px 40px;
+      /* ALTERADO (padding laterais de 40px para 60px) */
+      /* ALTERADO (padding-bottom de 40px para 60px) */
+      padding: 30px 60px 60px 60px; 
       page-break-inside: avoid;
     }
     
@@ -184,6 +188,7 @@ async function buildHTML(data) {
       margin-bottom: 12px;
       text-align: justify;
       line-height: 1.7;
+      text-indent: 1.5em; /* ADICIONADO (para indentar o parágrafo) */
     }
     
     .content-page ul {
@@ -407,7 +412,7 @@ async function buildHTML(data) {
 </body>
 </html>
   `;
-  
+
   return html;
 }
 
