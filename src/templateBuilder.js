@@ -77,10 +77,10 @@ async function buildHTML(data) {
     @page {
       size: A4;
       /* Margens: Topo (80px), Laterais (80px), Base (90px) */
-      margin: 80px 80px 90px 80px; /* ALTERADO (base aumentada) */
+      margin: 80px 80px 90px 80px;
     }
     
-    /* ADICIONADO: Garante que a capa (primeira página) não tenha margens */
+    /* Garante que a capa (primeira página) não tenha margens */
     @page :first {
         margin: 0; 
     }
@@ -147,32 +147,28 @@ async function buildHTML(data) {
       left: 0;
       right: 0;
       height: 60px;
-      /* O padding lateral DEVE ser igual às margens laterais da @page */
-      padding: 10px 80px; /* MANTIDO (correto) */
+      padding: 10px 80px;
       background: white;
       border-bottom: 2px solid #17a2b8;
       z-index: 1000;
-      display: flex; /* Adicionado para centralizar a logo verticalmente */
-      align-items: center; /* Adicionado para centralizar a logo verticalmente */
+      display: flex;
+      align-items: center;
     }
     
     .page-header img {
-      height: 40px; /* MANTIDO */
+      height: 40px;
     }
     
     /* CONTEÚDO DAS PÁGINAS */
     .content-page {
-      margin-top: 0; 
-      padding: 0; /* ALTERADO (padding removido, @page cuida disso) */
-      
-      /* ADICIONADO: Força esta div a começar sempre numa nova página */
+      /* ✅ CORREÇÃO 1: Adiciona espaçamento superior para afastar do header */
+      margin-top: 80px;
+      padding: 0;
       page-break-before: always; 
-      
-      /* MANTIDO (evita que a própria div se quebre, se possível) */
       page-break-inside: avoid;
     }
     
-    /* ADICIONADO: Classe para forçar quebra de página */
+    /* Classe para forçar quebra de página */
     .quebra-pagina-antes {
       page-break-before: always;
     }
@@ -190,6 +186,8 @@ async function buildHTML(data) {
       font-size: 18pt;
       margin-top: 25px;
       margin-bottom: 15px;
+      /* ✅ CORREÇÃO 2: Evita quebra de página antes dos h2 principais */
+      page-break-after: avoid;
     }
     
     .content-page h3 {
@@ -203,7 +201,7 @@ async function buildHTML(data) {
       margin-bottom: 12px;
       text-align: justify;
       line-height: 1.7;
-      text-indent: 1.5em; /* ADICIONADO (para indentar o parágrafo) */
+      text-indent: 1.5em;
     }
     
     .content-page ul {
@@ -312,6 +310,12 @@ async function buildHTML(data) {
       font-weight: bold;
       margin-top: 5px;
     }
+    
+    /* ✅ CORREÇÃO 3: Seção de detalhes do relatório começa em nova página */
+    .secao-detalhes-relatorio {
+      page-break-before: always;
+      margin-top: 80px;
+    }
   </style>
 </head>
 <body>
@@ -342,9 +346,6 @@ async function buildHTML(data) {
     }).join('\n')}
   </div>
   
-  <!-- REMOVIDO: O <div class="page-break"></div> não é mais necessário,
-       pois o .content-page agora força a quebra de página -->
-    
   <!-- PÁGINA 4+: RELATÓRIO ESPECÍFICO DA PESSOA -->
   <div class="content-page">
     <h1>Seu Relatório Personalizado</h1>
@@ -406,23 +407,26 @@ async function buildHTML(data) {
         </div>
       </div>
     </div>
+  </div>
     
-    <!-- Conteúdo do Relatório Específico -->
-    <!-- ADICIONADO: Wrapper com a classe de quebra de página -->
-    <div class="quebra-pagina-antes">
-      ${relatorioData.paragrafos.map((item) => {
-        const text = item.text;
-        
+  <!-- ✅ CORREÇÃO 4: Conteúdo do Relatório Específico em nova página -->
+  <div class="secao-detalhes-relatorio">
+    ${relatorioData.paragrafos.map((item) => {
+      const text = item.text;
+      
+      // Verifica se é título principal (números seguidos de ponto)
+      if (text.match(/^\d+\.\s+/)) {
         return `<h2>${text}</h2>`;
-      } else if (text.match(/^[A-ZÇÃÕÁÉÍÓÚ\s\-–()]+$/) && text.length < 100) {
+      } 
+      // Verifica se é subtítulo (texto todo em maiúsculas e curto)
+      else if (text.match(/^[A-ZÇÃÕÁÉÍÓÚ\s\-–()]+$/) && text.length < 100) {
         return `<h3>${text}</h3>`;
-      } else if (text.includes('Orientado para')) {
-        } else {
-          return `<p>${text}</p>`;
-        }
-      }).join('\n')}
-    </div>
-    
+      } 
+      // Texto normal
+      else {
+        return `<p>${text}</p>`;
+      }
+    }).join('\n')}
   </div>
   
 </body>
