@@ -141,7 +141,7 @@ async function buildHTML(data) {
       left: 0;
       right: 0;
       height: 60px;
-      padding: 10px 60px; /* ALTERADO O PADDING (15px 30px) para 10px 60px para centralizar a logo maior */
+      padding: 10px 80px; /* ALTERADO O PADDING (de 60px para 80px nas laterais) */
       background: white;
       border-bottom: 2px solid #17a2b8;
       z-index: 1000;
@@ -156,9 +156,9 @@ async function buildHTML(data) {
     /* CONTEÚDO DAS PÁGINAS */
     .content-page {
       margin-top: 80px;
-      /* ALTERADO (padding laterais de 40px para 60px) */
-      /* ALTERADO (padding-bottom de 40px para 60px) */
-      padding: 30px 60px 60px 60px; 
+      /* ALTERADO (padding laterais de 60px para 80px) */
+      /* ALTERADO (padding-bottom de 60px para 80px) */
+      padding: 30px 80px 80px 80px; 
       page-break-inside: avoid;
     }
     
