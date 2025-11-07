@@ -76,10 +76,14 @@ async function buildHTML(data) {
   <style>
     @page {
       size: A4;
-      margin: 0; /* REVERTIDO (para @page não controlar o layout) */
+      /* Margens: Topo (80px), Laterais (80px), Base (80px) */
+      margin: 80px 80px 80px 80px; /* ALTERADO */
     }
     
-    /* REMOVIDO @page :first (não é mais necessário) */
+    /* ADICIONADO: Garante que a capa (primeira página) não tenha margens */
+    @page :first {
+        margin: 0; 
+    }
     
     * {
       margin: 0;
@@ -158,14 +162,13 @@ async function buildHTML(data) {
     
     /* CONTEÚDO DAS PÁGINAS */
     .content-page {
-      /* REVERTIDO (de 0 para 0, estava 0) */
       margin-top: 0; 
-      /* ALTERADO 
-         - padding-top: 90px (para "empurrar" o conteúdo abaixo do header fixo)
-         - padding-bottom: 90px (para margem inferior)
-         - padding laterais: 80px 
-      */
-      padding: 90px 80px 90px 80px; 
+      padding: 0; /* ALTERADO (padding removido, @page cuida disso) */
+      
+      /* ADICIONADO: Força esta div a começar sempre numa nova página */
+      page-break-before: always; 
+      
+      /* MANTIDO (evita que a própria div se quebre, se possível) */
       page-break-inside: avoid;
     }
     
@@ -334,7 +337,8 @@ async function buildHTML(data) {
     }).join('\n')}
   </div>
   
-  <div class="page-break"></div>
+  <!-- REMOVIDO: O <div class="page-break"></div> não é mais necessário,
+       pois o .content-page agora força a quebra de página -->
     
   <!-- PÁGINA 4+: RELATÓRIO ESPECÍFICO DA PESSOA -->
   <div class="content-page">
