@@ -106,7 +106,7 @@ async function buildHTML(data) {
     }
     
     .capa-brain {
-      width: 1200px;
+      width: 300px;
       margin-bottom: 40px;
     }
     
