@@ -76,17 +76,10 @@ async function buildHTML(data) {
   <style>
     @page {
       size: A4;
-      /* * Topo: 90px (espaço pro header de 60px + 30px de "respiro")
-       * Base: 90px (aumento da margem inferior)
-       * Laterais: 80px (como já estava)
-       */
-      margin: 90px 80px 90px 80px; /* ALTERADO */
+      margin: 0; /* REVERTIDO (para @page não controlar o layout) */
     }
     
-    /* ADICIONADO: Garante que a capa (primeira página) não tenha margens */
-    @page :first {
-        margin: 0; 
-    }
+    /* REMOVIDO @page :first (não é mais necessário) */
     
     * {
       margin: 0;
@@ -165,10 +158,14 @@ async function buildHTML(data) {
     
     /* CONTEÚDO DAS PÁGINAS */
     .content-page {
-      /* ALTERADO (de 80px para 0, pois @page cuida disso) */
+      /* REVERTIDO (de 0 para 0, estava 0) */
       margin-top: 0; 
-      /* ALTERADO (paddings removidos, @page cuida das margens/padding) */
-      padding: 0; 
+      /* ALTERADO 
+         - padding-top: 90px (para "empurrar" o conteúdo abaixo do header fixo)
+         - padding-bottom: 90px (para margem inferior)
+         - padding laterais: 80px 
+      */
+      padding: 90px 80px 90px 80px; 
       page-break-inside: avoid;
     }
     
