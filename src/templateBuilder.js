@@ -55,9 +55,7 @@ async function buildHTML(data) {
   };
 
   // Carregar imagens em base64
-  const logoPath = path.join(__dirname, '../assets/logo.png');
   const brainPath = path.join(__dirname, '../assets/brain-icon.png');
-  const logoBase64 = await imageToBase64(logoPath);
   const brainBase64 = await imageToBase64(brainPath);
 
   // Obter conteúdo do relatório específico
@@ -140,29 +138,9 @@ async function buildHTML(data) {
       border-bottom: 3px solid #17a2b8;
     }
     
-    /* HEADER COM LOGO (todas as páginas exceto capa) */
-    .page-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      padding: 10px 80px;
-      background: white;
-      border-bottom: 2px solid #17a2b8;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-    }
-    
-    .page-header img {
-      height: 40px;
-    }
-    
     /* CONTEÚDO DAS PÁGINAS */
     .content-page {
-      /* ✅ CORREÇÃO 1: Adiciona espaçamento superior para afastar do header */
-      margin-top: 80px;
+      margin-top: 0;
       padding: 0;
       page-break-before: always; 
       page-break-inside: avoid;
@@ -186,7 +164,6 @@ async function buildHTML(data) {
       font-size: 18pt;
       margin-top: 25px;
       margin-bottom: 15px;
-      /* ✅ CORREÇÃO 2: Evita quebra de página antes dos h2 principais */
       page-break-after: avoid;
     }
     
@@ -311,10 +288,10 @@ async function buildHTML(data) {
       margin-top: 5px;
     }
     
-    /* ✅ CORREÇÃO 3: Seção de detalhes do relatório começa em nova página */
+    /* Seção de detalhes do relatório começa em nova página */
     .secao-detalhes-relatorio {
       page-break-before: always;
-      margin-top: 80px;
+      margin-top: 0;
     }
   </style>
 </head>
@@ -326,11 +303,6 @@ async function buildHTML(data) {
     <div class="capa-titulo">RELATÓRIO</div>
     <div class="capa-subtitulo">Perfil de Comunicação e Escuta em Vendas</div>
     <div class="capa-nome">${nome}</div>
-  </div>
-  
-  <!-- HEADER (aparece em todas as páginas seguintes) -->
-  <div class="page-header">
-    <img src="${logoBase64}" alt="Logo">
   </div>
   
   <!-- PÁGINA 2-3: CONTEÚDO DA CAPA ORIGINAL -->
@@ -409,7 +381,7 @@ async function buildHTML(data) {
     </div>
   </div>
     
-  <!-- ✅ CORREÇÃO 4: Conteúdo do Relatório Específico em nova página -->
+  <!-- Conteúdo do Relatório Específico em nova página -->
   <div class="secao-detalhes-relatorio">
     ${relatorioData.paragrafos.map((item) => {
       const text = item.text;
