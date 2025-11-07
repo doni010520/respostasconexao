@@ -162,23 +162,29 @@ async function buildHTML(data) {
     .content-page h2 {
       color: #17a2b8;
       font-size: 18pt;
-      margin-top: 25px;
-      margin-bottom: 15px;
+      margin-top: 30px;
+      margin-bottom: 20px;
       page-break-after: avoid;
     }
     
     .content-page h3 {
       color: #333;
       font-size: 14pt;
-      margin-top: 20px;
-      margin-bottom: 10px;
+      margin-top: 25px;
+      margin-bottom: 15px;
     }
     
     .content-page p {
-      margin-bottom: 12px;
+      margin-bottom: 20px;
       text-align: justify;
-      line-height: 1.7;
+      line-height: 1.8;
       text-indent: 1.5em;
+    }
+    
+    /* Mais espaçamento para parágrafos na seção de detalhes do relatório */
+    .secao-detalhes-relatorio p {
+      margin-bottom: 25px;
+      line-height: 1.9;
     }
     
     .content-page ul {
@@ -200,7 +206,7 @@ async function buildHTML(data) {
     }
     
     .pontuacao-item {
-      margin: 15px 0;
+      margin: 20px 0;
     }
     
     .pontuacao-label {
@@ -270,7 +276,7 @@ async function buildHTML(data) {
     }
     
     .resultado-item {
-      margin: 15px 0;
+      margin: 20px 0;
     }
     
     .resultado-label {
