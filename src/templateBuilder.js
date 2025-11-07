@@ -323,26 +323,8 @@ async function buildHTML(data) {
   </div>
   
   <div class="page-break"></div>
-  
-  <!-- PÁGINA 4-5: PERFIL DE ESTILOS DE ESCUTA -->
-  <div class="content-page">
-    <h1>Perfil de Estilos de Escuta</h1>
-    ${conteudosBase.perfil_estilos.map((paragrafo) => {
-      if (paragrafo.includes('Perfil de Estilos de Escuta')) {
-        return '';
-      } else if (paragrafo.length < 60 && !paragrafo.includes('.') || paragrafo.match(/^[A-Z\s]+$/)) {
-        return `<h3>${paragrafo}</h3>`;
-      } else if (paragrafo.match(/^\d+[\.=]/)) {
-        return `<p><strong>${paragrafo}</strong></p>`;
-      } else {
-        return `<p>${paragrafo}</p>`;
-      }
-    }).join('\n')}
-  </div>
-  
-  <div class="page-break"></div>
-  
-  <!-- PÁGINA 6+: RELATÓRIO ESPECÍFICO DA PESSOA -->
+    
+  <!-- PÁGINA 4+: RELATÓRIO ESPECÍFICO DA PESSOA -->
   <div class="content-page">
     <h1>Seu Relatório Personalizado</h1>
     
